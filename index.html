@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Godaddy Domain Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #333;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+        .output a {
+            display: block;
+            margin: 5px 0;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .output a:hover {
+            text-decoration: underline;
+        }
+        .batch-button {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Godaddy Domain Registration</h1>
+<textarea id="domainInput" placeholder="Enter domain names separated by new lines..."></textarea>
+<button onclick="generateLinks()">Generate Links</button>
+
+<div class="output" id="outputArea"></div>
+
+<footer>
+    Powered by Professor Software Solutions
+</footer>
+
+<script>
+    function generateLinks() {
+        const input = document.getElementById('domainInput').value;
+        const domains = input.split('\n').filter(domain => domain.trim() !== '');
+        const outputArea = document.getElementById('outputArea');
+
+        outputArea.innerHTML = ''; // Clear previous output
+
+        domains.forEach((domain, index) => {
+            const link = `https://www.godaddy.com/en-ie/domainsearch/find?domainToCheck=${domain.trim()}`;
+            const anchor = document.createElement('a');
+            anchor.href = link;
+            anchor.target = '_blank'; // Open link in new tab
+            anchor.textContent = domain.trim();
+            anchor.onclick = () => changeColor(anchor); // Change color on click
+            outputArea.appendChild(anchor);
+
+            // Add batch button every 10 links
+            if ((index + 1) % 10 === 0) {
+                const batchButton = document.createElement('button');
+                batchButton.textContent = `Open previous ${Math.min(10, index + 1)} links`;
+                batchButton.className = 'batch-button';
+                batchButton.onclick = () => {
+                    changeColor(batchButton); // Change color on click
+                    openBatchLinks(domains.slice(index - 9, index + 1));
+                };
+                outputArea.appendChild(batchButton);
+            }
+        });
+    }
+
+    function openBatchLinks(batch) {
+        batch.forEach(domain => {
+            const link = `https://www.godaddy.com/en-ie/domainsearch/find?domainToCheck=${domain.trim()}`;
+            window.open(link, '_blank'); // Open each link in a new tab
+        });
+    }
+
+    function changeColor(element) {
+        element.style.color = 'black'; // Change the text color to black
+    }
+</script>
+
+</body>
+</html>
