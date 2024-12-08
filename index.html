@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Godaddy Domain Registration</title>
+    <title>Domain Availability Check</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -64,7 +64,7 @@
 </head>
 <body>
 
-<h1>Godaddy Domain Registration</h1>
+<center><h1>Domain Availability Checker</h1><h3>NameCheap Hosting Provider</h3></center>
 <textarea id="domainInput" placeholder="Enter domain names separated by new lines..."></textarea>
 <button onclick="generateLinks()">Generate Links</button>
 
@@ -107,7 +107,7 @@
 
     function openBatchLinks(batch) {
         batch.forEach(domain => {
-            const link = `https://www.godaddy.com/en-ie/domainsearch/find?domainToCheck=${domain.trim()}`;
+            const link = `https://www.namecheap.com/domains/registration/results/?domain=${domain.trim()}`;
             window.open(link, '_blank'); // Open each link in a new tab
         });
     }
@@ -116,6 +116,5 @@
         element.style.color = 'black'; // Change the text color to black
     }
 </script>
-
 </body>
 </html>
