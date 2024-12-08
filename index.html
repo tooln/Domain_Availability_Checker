@@ -83,7 +83,7 @@
         outputArea.innerHTML = ''; // Clear previous output
 
         domains.forEach((domain, index) => {
-            const link = `https://www.godaddy.com/en-ie/domainsearch/find?domainToCheck=${domain.trim()}`;
+            const link = `https://www.namecheap.com/domains/registration/results/?domain=${domain.trim()}`;
             const anchor = document.createElement('a');
             anchor.href = link;
             anchor.target = '_blank'; // Open link in new tab
