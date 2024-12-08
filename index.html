@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain Availability Check</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #111;
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: url('https://cdn.pixabay.com/photo/2021/02/14/12/04/transparent-cursor-6005565_960_720.png'), auto;
+        }
+
+        /* Particle Background Effect */
+        .particle-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            width: 90%;
+            max-width: 950px;
+            padding: 40px;
+            background: rgba(31, 31, 31, 0.8);
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1, h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: #00bcd4;
+            text-align: center;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        /* Textarea */
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 15px;
+            border: 1px solid #333;
+            background-color: #222;
+            color: #fff;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        textarea:focus {
+            border-color: #00bcd4;
+        }
+
+        /* Button Styling */
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background: linear-gradient(45deg, #00bcd4, #008c9e);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+            margin: 10px;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+            background-color: #008c9e;
+        }
+
+        /* Output Section */
+        .output {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(31, 31, 31, 0.9);
+            border-radius: 20px;
+            width: 100%;
+            max-height: 400px;
+            overflow-y: auto;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+        }
+
+        .output a {
+            display: block;
+            color: #00bcd4;
+            font-size: 18px;
+            text-decoration: none;
+            margin-bottom: 10px;
+            transition: color 0.3s, transform 0.3s ease-in-out;
+        }
+
+        .output a:hover {
+            color: #4caf50;
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        footer a {
+            color: #00bcd4;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 255, 0.5);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00bcd4;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="particle-container"></div>
+
+    <div class="container">
+        <h1>Domain Availability Checker</h1>
+        <h3>GoDaddy and NameCheap</h3>
+        <textarea id="domainInput" placeholder="Enter domain names separated by new lines..."></textarea>
+
+        <div>
+            <button onclick="generateLinks('godaddy')">GoDaddy</button>
+            <button onclick="generateLinks('namecheap')">NameCheap</button>
+        </div>
+
+        <div class="output" id="outputArea"></div>
+
+        <footer>
+            Powered by <a href="https://bughuntar.com">Professor Software Solutions</a>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+        // Particle.js Background Effect
+        particlesJS('particle-container', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#00bcd4' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5 },
+                size: { value: 3 },
+                move: { speed: 2, direction: 'none', random: true, straight: false, out_mode: 'out' }
+            },
+            interactivity: {
+                events: { onhover: { enable: true, mode: 'repulse' } },
+                modes: { repulse: { distance: 100, duration: 1 } }
+            },
+            retina_detect: true
+        });
+
+        // Function to Generate Links
+        function generateLinks(provider) {
+            const input = document.getElementById('domainInput').value;
+            const domains = input.split('\n').filter(domain => domain.trim() !== '');
+            const outputArea = document.getElementById('outputArea');
+
+            outputArea.innerHTML = ''; // Clear previous output
+
+            if (provider === 'godaddy') {
+                domains.forEach((domain, index) => {
+                    const link = `https://www.godaddy.com/en-ie/domainsearch/find?domainToCheck=${domain.trim()}`;
+                    const anchor = document.createElement('a');
+                    anchor.href = link;
+                    anchor.target = '_blank'; // Open link in new tab
+                    anchor.textContent = `GoDaddy: ${domain.trim()}`;
+                    outputArea.appendChild(anchor);
+
+                    // Add bulk opener for every 10 links
+                    if ((index + 1) % 10 === 0) {
+                        const batchButton = document.createElement('button');
+                        batchButton.textContent = `Open previous ${Math.min(10, index + 1)} links`;
+                        batchButton.onclick = () => {
+                            openBatchLinks(domains.slice(index - 9, index + 1), 'godaddy');
+                        };
+                        outputArea.appendChild(batchButton);
+                    }
+                });
+            } else if (provider === 'namecheap') {
+                domains.forEach((domain, index) => {
+                    const link = `https://www.namecheap.com/domains/registration/results/?domain=${domain.trim()}`;
+                    const anchor = document.createElement('a');
+                    anchor.href = link;
+                    anchor.target = '_blank'; // Open link in new tab
+                    anchor.textContent = `NameCheap: ${domain.trim()}`;
+                    outputArea.appendChild(anchor);
+
+                    // Add bulk opener for every 10 links
+                    if ((index + 1) % 10 === 0) {
+                        const batchButton = document.createElement('button');
+                        batchButton.textContent = `Open previous ${Math.min(10, index + 1)} links`;
+                        batchButton.onclick = () => {
+                            openBatchLinks(domains.slice(index - 9, index + 1), 'namecheap');
+                        };
+                        outputArea.appendChild(batchButton);
+                    }
+                });
+            }
+        }
+
+        // Function to Open Links in Bulk
+        function openBatchLinks(batch, provider) {
+            batch.forEach(domain => {
+                const link = provider === 'godaddy'
+                    ? `https://www.godaddy.com/en-ie/domainsearch/find?domainToCheck=${domain.trim()}`
+                    : `https://www.namecheap.com/domains/registration/results/?domain=${domain.trim()}`;
+                window.open(link, '_blank');
+            });
+        }
+    </script>
+
+</body>
+</html>
